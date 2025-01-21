@@ -8,6 +8,33 @@ import tkinter as tk
 from tkinter import messagebox
 
 
+class DataCollectorUI:
+    def __init__(self, app_packages_list):
+        self.root = tk.Tk()
+        self.root.title("Data Collector")
+        self.root.geometry("400x300")
+        self.app_packages = app_packages_list
+        self.create_widgets()
+        self.root.mainloop()
+
+    def create_widgets(self):
+        try:
+
+            self.dropdown_label = tk.Label(self.root, text="Select Option:")
+            self.dropdown_label.pack(pady=5)
+
+            self.selected_option = tk.StringVar(self.root)
+            self.selected_option.set(self.app_packages[0])
+
+            self.dropdown = tk.OptionMenu(self.root, self.selected_option, *self.app_packages)
+            self.dropdown.pack(pady=5)
+
+        except IndexError as e:
+            messagebox.showerror("Error", "No app packages found. Please connect a device and try again.")
+            self.root.destroy()
+            return
+
+
 class DataCollectorApp:
     def __init__(self):
         print("Initializing Data Collection")
@@ -109,6 +136,7 @@ class DataCollectorApp:
 
 
     def list_all_processes(self):
+        
         try:
             # Execute adb shell ps command to retrieve the list of all running processes
             output = subprocess.run(['adb', 'shell', 'ps'], capture_output=True, text=True)
@@ -131,13 +159,17 @@ class DataCollectorApp:
             sorted_process_names = sorted(process_names)
 
             # Print the distinct process names in a prettified format
+            """
             print("Distinct Process Names (starting with 'com.'):")
             for process_name in sorted_process_names:
                 print(process_name)
+            """
 
         except Exception as e:
             print(f"Error: An error occurred: {e}")
 
+        return sorted_process_names
+    
 
 
     def capture_metrics(self, interval=1, duration=60):
@@ -219,9 +251,9 @@ class DataCollectorApp:
 if __name__ == "__main__":
     app = DataCollectorApp()
     #app.collect_performance_data()
-    app.list_all_processes()
+    packages = app.list_all_processes()
     #app.list_all_processes_distinct()
-
+    dataUI = DataCollectorUI(packages)
 
 
 
