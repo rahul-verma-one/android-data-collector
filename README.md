@@ -13,8 +13,9 @@ This software is provided "as is", without warranty of any kind, express or impl
 <li>Set path variable to include adb</li>
 </ul>
 
-Usage:
-
-To run, use 
+<br>
+<h2>Usage:</h2>
+<p>
+To run, use: 
     <code>python app.py</code>
-
+</p>
