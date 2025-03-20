@@ -1,7 +1,7 @@
 import tkinter as tk
 from tkinter import messagebox, filedialog
 import subprocess
-
+from app import DataCollectorApp
 
 
 class DataCollectorUI:
@@ -12,6 +12,7 @@ class DataCollectorUI:
         self.app_packages = []
         self.create_widgets()
         self.root.mainloop()
+
 
     def create_widgets(self):
         try:
@@ -25,7 +26,7 @@ class DataCollectorUI:
             self.dropdown = tk.OptionMenu(self.root, self.selected_option, *self.app_packages)
             self.dropdown.pack(pady=5)
 
-            self.action_button = tk.Button(self.root, text="Execute", command=self.on_button_click)
+            self.action_button = tk.Button(self.root, text="Execute", command=self.on_execute_click)
             self.action_button.pack(pady=5)
 
             self.refresh_button = tk.Button(self.root, text="Refresh", command=self.on_refresh_click)
@@ -37,9 +38,12 @@ class DataCollectorUI:
             return
 
 
-    def on_button_click(self):
-        package_name = self.selected_option.get()
-        self.display_package_name()(package_name)
+    def on_execute_click(self):
+        package = self.get_package_name()
+        # TODO: Call further Method
+        collector_app = DataCollectorApp(package)
+        collector_app.collect_performance_data()
+        
 
     def on_refresh_click(self):
         self.app_packages = self.list_all_processes()
@@ -49,8 +53,10 @@ class DataCollectorUI:
             self.dropdown['menu'].add_command(label=package, command=tk._setit(self.selected_option, package))
 
 
-    def display_package_name(self, package_name):
+    def get_package_name(self):
+        package_name = self.selected_option.get()
         print("The Package Name is: ", package_name)
+        return package_name
 
 
     def list_all_processes(self):
