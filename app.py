@@ -100,8 +100,9 @@ class DataCollectorUI:
                 fields = line.split()
                 if fields:
                     process_name = fields[-1]  # Process name is the last field
-                    if process_name.startswith('com.'):  # Include only processes that start with 'com.'
-                        process_names.add(process_name)
+                    process_names.add(process_name)
+                    #if process_name.startswith('com.'):  # Include only processes that start with 'com.'
+                    #    process_names.add(process_name)
             sorted_process_names = sorted(process_names)
             #print("Distinct Process Names (starting with 'com.'):")
             #for process_name in sorted_process_names:
